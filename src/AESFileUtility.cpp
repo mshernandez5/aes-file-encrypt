@@ -28,7 +28,7 @@ int main(int argc, char * argv[])
     // Set Options Based On Arguments
     try
     {
-        for (int i = 1; i < arguments.size(); ++i)
+        for (std::vector<std::string>::size_type i = 1; i < arguments.size(); ++i)
         {
             std::string & option = arguments[i];
             // Encrypt/Decrypt
