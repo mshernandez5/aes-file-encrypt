@@ -35,52 +35,76 @@ int main(int argc, char * argv[])
             if (i == 1)
             {
                 if (equalsIgnoreCase(option.substr(0, 3), "enc"))
+                {
                     encryptMode = true;
+                }
                 else if (equalsIgnoreCase(option.substr(0, 3), "dec"))
+                {
                     encryptMode = false;
+                }
                 else
+                {
                     throw InvalidArgumentException(option);
+                }
             }
             // ASCII Hex Key
             else if (equalsIgnoreCase(option, "-k"))
             {
                 if (i + 1 >= arguments.size())
+                {
                     throw InvalidArgumentException(option);
+                }
                 textKey = arguments[++i];
             }
             // Mode Of Operation (Currently Only ECB Supported)
             else if (equalsIgnoreCase(option, "-m"))
             {
                 if (i + 1 >= arguments.size())
+                {
                     throw InvalidArgumentException(option);
+                }
                 modeOfOperation = arguments[++i];
             }
             // Key Size (Currently Only 128 Supported)
             else if (equalsIgnoreCase(option, "-s"))
             {
                 if (i + 1 >= arguments.size())
+                {
                     throw InvalidArgumentException(option);
+                }
                 int keySize = std::stoi(arguments[++i]);
                 if (keySize != 128 && keySize != 192 && keySize != 256)
+                {
                     throw InvalidArgumentException(arguments[i]);
+                }
                 keyByteSize = keySize / 8;
             }
             // Input/Output Files
             else
             {
                 if (inputFilename.empty())
+                {
                     inputFilename = option;
+                }
                 else if (outputFilename.empty())
+                {
                     outputFilename = option;
+                }
                 else
+                {
                     throw InvalidArgumentException(option);
+                }
             }
         }
         // Check For Required Options
         if (inputFilename.empty())
+        {
             throw std::runtime_error("Input file not specified!");
+        }
         if (outputFilename.empty())
+        {
             throw std::runtime_error("Output file not specified!");
+        }
     }
     catch (const std::exception & e)
     {
@@ -94,9 +118,13 @@ int main(int argc, char * argv[])
     try
     {
         if (!textKey.empty())
+        {
             keyBytes = keyInput.keyRead(textKey);
+        }   
         else
+        {
             keyBytes = keyInput.keyRead();
+        }
     }
     catch(const std::exception & e)
     {
@@ -123,9 +151,13 @@ int main(int argc, char * argv[])
     BlockCipher * algorithm = new AES(keyBytes, keyByteSize);
     OperationMode * mode = new ECBMode();
     if (encryptMode)
+    {
         mode->encrypt(inputFileStream, outputFileStream, *algorithm);
+    }
     else
+    {
         mode->decrypt(inputFileStream, outputFileStream, *algorithm);
+    }
 
     // Clean Up
     inputFileStream.close();

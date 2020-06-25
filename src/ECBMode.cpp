@@ -4,7 +4,9 @@ void padBuffer(uint8_t * buffer, const int & bytesRead, const int & blockSize)
 {
     int paddingByte = blockSize - bytesRead;
     for (int byte = bytesRead; byte < blockSize; ++byte)
+    {
         buffer[byte] = paddingByte;
+    }
 }
 
 void ECBMode::encrypt(std::istream & inStream, std::ostream & outStream, BlockCipher & algorithm)
@@ -39,9 +41,13 @@ void ECBMode::decrypt(std::istream & inStream, std::ostream & outStream, BlockCi
         algorithm.decrypt(fileBuffer);
         lastBlock = inStream.peek() == EOF;
         if (lastBlock)
+        {
             outStream.write((char *) fileBuffer, blockSize - fileBuffer[blockSize - 1]);
+        }
         else
+        {
             outStream.write((char *) fileBuffer, blockSize);
+        }
     } while (!lastBlock);
     delete[] fileBuffer;
 }

@@ -19,8 +19,12 @@ class AES : public BlockCipher
 
     private:
         uint8_t * keySchedule;
+        
+        int keyByteSize;
 
-        uint8_t * generateKeySchedule(uint8_t * keyBytes, const int & keyByteSize);
+        int numberRounds;
+
+        uint8_t * generateKeySchedule(uint8_t * keyBytes);
 
         void addWords(uint8_t * a, uint8_t * b);
 
