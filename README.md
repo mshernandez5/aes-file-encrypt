@@ -14,7 +14,7 @@ Remove the compiled classes and executable with `make clean`.
 # Using
 
 `./aesf <enc | dec> <input_file> <output_file> <options>`\
-will prompt for an AES 128 key in hex format, ex. `00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F`
+will prompt for an AES key in hex format, ex. `00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F`
 
 # Options
 
