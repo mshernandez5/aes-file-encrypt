@@ -1,19 +1,21 @@
-#ifndef KEY_INPUT_H
-#define KEY_INPUT_H
+#ifndef HEX_INPUT_H
+#define HEX_INPUT_H
 
-class KeyInput
+class HexInput
 {
     private:
         uint8_t * keyBytes;
         int keyByteSize;
+        std::string prompt;
         bool isValidHexValue(const char & c);
         uint8_t getHexValue(const char & c);
 
     public:
-        KeyInput(const int & numBytes);
-        ~KeyInput();
+        HexInput(const int & numBytes);
+        HexInput(const int & numBytes, const std::string & prompt);
+        ~HexInput();
         uint8_t * keyRead(); //throws InvalidKeyException
         uint8_t * keyRead(const std::string & keyString); //throws InvalidKeyException
 };
 
-#endif // KEY_INPUT_H
+#endif // HEX_INPUT_H

@@ -6,11 +6,12 @@
 
 #include "AES.h"
 #include "ECBMode.h"
+#include "CBCMode.h"
 #include "Utilities.h"
 #include "BlockCipher.h"
 #include "OperationMode.h"
 #include "InvalidArgumentException.h"
-#include "KeyInput.h"
+#include "HexInput.h"
 
 int main(int argc, char * argv[])
 {
@@ -22,6 +23,7 @@ int main(int argc, char * argv[])
     std::string inputFilename;
     std::string outputFilename;
     std::string textKey;
+    std::string textInitializationVector;
     std::string modeOfOperation = "ecb";
     int keyByteSize = 16;
 
@@ -56,7 +58,7 @@ int main(int argc, char * argv[])
                 }
                 textKey = arguments[++i];
             }
-            // Mode Of Operation (Currently Only ECB Supported)
+            // Mode Of Operation (ECB, CBC)
             else if (equalsIgnoreCase(option, "-m"))
             {
                 if (i + 1 >= arguments.size())
@@ -64,6 +66,20 @@ int main(int argc, char * argv[])
                     throw InvalidArgumentException(option);
                 }
                 modeOfOperation = arguments[++i];
+                if (!equalsIgnoreCase(modeOfOperation, "ecb")
+                    && !equalsIgnoreCase(modeOfOperation, "cbc"))
+                {
+                    throw InvalidArgumentException(arguments[i]);
+                }
+            }
+            // ASCII Initialization Vector (CBC)
+            else if (equalsIgnoreCase(option, "-iv"))
+            {
+                if (i + 1 >= arguments.size())
+                {
+                    throw InvalidArgumentException(option);
+                }
+                textInitializationVector = arguments[++i];
             }
             // Key Size (Currently Only 128 Supported)
             else if (equalsIgnoreCase(option, "-s"))
@@ -114,13 +130,13 @@ int main(int argc, char * argv[])
     
     // Extract Key Bytes, Prompt For Key If Necessary
     uint8_t * keyBytes;
-    KeyInput keyInput(keyByteSize);
+    HexInput keyInput(keyByteSize);
     try
     {
         if (!textKey.empty())
         {
             keyBytes = keyInput.keyRead(textKey);
-        }   
+        }
         else
         {
             keyBytes = keyInput.keyRead();
@@ -128,11 +144,47 @@ int main(int argc, char * argv[])
     }
     catch(const std::exception & e)
     {
-        textKey.clear();
         std::cerr << e.what() << '\n';
         exit(1);
     }
-    
+
+    // Select Algorithm
+    BlockCipher * algorithm = new AES(keyBytes, keyByteSize);
+
+    // Initialization Vector Required For Non-ECB Modes
+    uint8_t * initializationVector;
+    HexInput ivInput(algorithm->getBlockSize(), "Initialization Vector: ");
+    if (!equalsIgnoreCase(modeOfOperation, "ecb"))
+    {
+        try
+        {
+            if (!textInitializationVector.empty())
+            {
+                initializationVector = ivInput.keyRead(textInitializationVector);
+            }   
+            else
+            {
+                initializationVector = ivInput.keyRead();
+            }
+        }
+        catch(const std::exception & e)
+        {
+            std::cerr << e.what() << '\n';
+            exit(1);
+        }
+    }
+
+    // Set Mode
+    OperationMode * mode;
+    if (equalsIgnoreCase(modeOfOperation, "ecb"))
+    {
+        mode = new ECBMode(*algorithm);
+    }
+    else
+    {
+        mode = new CBCMode(*algorithm, initializationVector);
+    }
+
     // Get File Streams
     std::ifstream inputFileStream(inputFilename, std::ios::binary);
     std::ofstream outputFileStream(outputFilename, std::ios::binary);
@@ -148,15 +200,13 @@ int main(int argc, char * argv[])
     }
 
     // Encrypt / Decrypt
-    BlockCipher * algorithm = new AES(keyBytes, keyByteSize);
-    OperationMode * mode = new ECBMode();
     if (encryptMode)
     {
-        mode->encrypt(inputFileStream, outputFileStream, *algorithm);
+        mode->encrypt(inputFileStream, outputFileStream);
     }
     else
     {
-        mode->decrypt(inputFileStream, outputFileStream, *algorithm);
+        mode->decrypt(inputFileStream, outputFileStream);
     }
 
     // Clean Up

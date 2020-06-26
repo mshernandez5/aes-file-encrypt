@@ -1,15 +1,8 @@
 #include "ECBMode.h"
 
-void padBuffer(uint8_t * buffer, const int & bytesRead, const int & blockSize)
-{
-    int paddingByte = blockSize - bytesRead;
-    for (int byte = bytesRead; byte < blockSize; ++byte)
-    {
-        buffer[byte] = paddingByte;
-    }
-}
+ECBMode::ECBMode(BlockCipher & algorithm) : algorithm(algorithm) {}
 
-void ECBMode::encrypt(std::istream & inStream, std::ostream & outStream, BlockCipher & algorithm)
+void ECBMode::encrypt(std::istream & inStream, std::ostream & outStream)
 {
     const int & blockSize = algorithm.getBlockSize();
     bool addedPadding = false;
@@ -30,7 +23,7 @@ void ECBMode::encrypt(std::istream & inStream, std::ostream & outStream, BlockCi
     delete[] fileBuffer;
 }
 
-void ECBMode::decrypt(std::istream & inStream, std::ostream & outStream, BlockCipher & algorithm)
+void ECBMode::decrypt(std::istream & inStream, std::ostream & outStream)
 {
     const int & blockSize = algorithm.getBlockSize();
     bool lastBlock = false;

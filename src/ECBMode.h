@@ -5,9 +5,14 @@
 
 class ECBMode : public OperationMode
 {
+    private:
+        BlockCipher & algorithm;
+
     public:
-        void encrypt(std::istream & inStream, std::ostream & outStream, BlockCipher & algorithm);
-        void decrypt(std::istream & inStream, std::ostream & outStream, BlockCipher & algorithm);
+        ECBMode(BlockCipher & algorithm);
+
+        void encrypt(std::istream & inStream, std::ostream & outStream);
+        void decrypt(std::istream & inStream, std::ostream & outStream);
 };
 
 #endif // ECB_MODE_H

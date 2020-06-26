@@ -2,16 +2,24 @@
 #include <string>
 #include <stdint.h>
 
-#include "KeyInput.h"
+#include "HexInput.h"
 #include "InvalidKeyException.h"
 
-KeyInput::KeyInput(const int & numBytes)
+HexInput::HexInput(const int & numBytes)
 {
     keyBytes = new uint8_t[numBytes];
     keyByteSize = numBytes;
+    prompt = "Hex Key: ";
 }
 
-KeyInput::~KeyInput()
+HexInput::HexInput(const int & numBytes, const std::string & prompt)
+{
+    keyBytes = new uint8_t[numBytes];
+    keyByteSize = numBytes;
+    this->prompt = prompt;
+}
+
+HexInput::~HexInput()
 {
     delete[] keyBytes;
 }
@@ -26,12 +34,12 @@ struct Byte
     }
 };
 
-bool KeyInput::isValidHexValue(const char & c)
+bool HexInput::isValidHexValue(const char & c)
 {
     return (c >= 48 && c <= 57) || (c >= 65 && c <= 70) || (c >= 97 && c <= 102);
 }
 
-uint8_t KeyInput::getHexValue(const char & c)
+uint8_t HexInput::getHexValue(const char & c)
 {
     if (c >= 48 && c <= 57)
     {
@@ -48,15 +56,15 @@ uint8_t KeyInput::getHexValue(const char & c)
     return 0;
 }
 
-uint8_t * KeyInput::keyRead()
+uint8_t * HexInput::keyRead()
 {
     std::string keyString;
-    std::cout << "Hex Key: ";
+    std::cout << prompt;
     std::getline(std::cin, keyString);
     return keyRead(keyString);
 }
 
-uint8_t * KeyInput::keyRead(const std::string & keyString)
+uint8_t * HexInput::keyRead(const std::string & keyString)
 {
     Byte tempByte;
     int numberNibblesRead = 0;
