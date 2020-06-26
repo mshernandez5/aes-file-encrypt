@@ -1,6 +1,6 @@
 # aes-file-encrypt
 
-A basic implementation of AES 128/192/256 in ECB/CBC mode using PKCS5 padding to encrypt files.\
+A basic implementation of AES 128/192/256 in ECB/CBC mode using PKCS7 padding to encrypt files.\
 TODO: More Modes, Multithreaded ECB
 
 # Compiling
