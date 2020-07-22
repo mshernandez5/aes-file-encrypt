@@ -81,7 +81,7 @@ int main(int argc, char * argv[])
                 }
                 textInitializationVector = arguments[++i];
             }
-            // Key Size (Currently Only 128 Supported)
+            // Key Size
             else if (equalsIgnoreCase(option, "-s"))
             {
                 if (i + 1 >= arguments.size())
