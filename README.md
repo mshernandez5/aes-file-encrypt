@@ -10,12 +10,15 @@ Currently, I only compile binaries for Windows and Linux on x86-64.
 
 # Compiling Your Own Binaries
 
-Compiling requires g++ and GNU Make\
+Compiling requires g++ and GNU Make
+
 The program compiles fine with MSVC on Windows and should compile fine elsewhere as well but I have not included any scripts or makefile equivalents to automate this process.
 
 Clone the project and run `make` to generate an executable named `aesf`.
 
-Remove the compiled classes and executable with `make clean`.
+Remove the compiled objects and executable with `make clean`.
+
+Take a look at the makefile for comments on other targets (remake, release).
 
 # Using
 
@@ -65,7 +68,7 @@ ex. `./aesf <enc | dec> <input_file> <output_file> -s 256 -m cbc -k 112233445566
 
 This is not meant to be a comprehensive description of every process involved but if you'd like to take a quick look around the source code this should give you an idea of where to begin:
 
-1. The program begins in AESFileUtility.cpp, where the main method handles command-line arguments and prepares the information necessary for encryption/decryption (keys, files, etc). Since keys and initialization vectors are provided through ASCII text representing hexidecimal values, an instance of the HexInput class is used to extract their true values into byte arrays. The HexInput class is also capable of prompting a user for the ASCII input if it was not provided as a command-line argument.
+1. The program begins in AESFileUtility.cpp, where the main method handles command-line arguments and prepares the information necessary for encryption/decryption (keys, files, etc). Since keys and initialization vectors are provided through ASCII text representing hexadecimal values, an instance of the HexInput class is used to extract their true values into byte arrays. The HexInput class is also capable of prompting a user for the ASCII input if it was not provided as a command-line argument.
 2. An instance of the AES class is created given a key and key size; round keys are immediately generated so the class is ready to encrypt/decrypt individual blocks of data.
 3. An instance of an operation mode (EBC/CBC) is created given the instance of AES. The operation mode takes an input stream (from the input file), reads the contents into individual blocks that can be processed by the AES algorithm, and writes the output into the given output stream (to the output file).
 
