@@ -26,23 +26,35 @@ Take a look at the makefile for comments on other targets (remake, release).
 will use default settings (see options) and prompt for an AES key in hex format, ex. `00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F`
 
 Here is a basic example of the program in use (AES-128, ECB):
+
+Create & View Example File
 ```
 markus@rz-pc:~/Desktop/example$ echo "very secret message" > secret.txt
 markus@rz-pc:~/Desktop/example$ cat secret.txt
 very secret message
+```
+
+Encrypt File
+```
 markus@rz-pc:~/Desktop/example$ ./aesf enc secret.txt encrypted.txt
 Hex Key: 01020304050607080910111213141516
+```
+
+View Encrypted Contents
+```
 markus@rz-pc:~/Desktop/example$ cat encrypted.txt
 
 ��
   2bD�
 7كh
 E��]x�<2����markus@rz-pc:~/Desktop/example$ 
+```
+Decrypt File & View Original Contents
+```
 markus@rz-pc:~/Desktop/example$ ./aesf dec encrypted.txt decrypted.txt
 Hex Key: 01020304050607080910111213141516
 markus@rz-pc:~/Desktop/example$ cat decrypted.txt
 very secret message
-markus@rz-pc:~/Desktop/example$ 
 ```
 (though using a predictable 128-bit key in ECB mode may be a poor choice for a secret message)
 
