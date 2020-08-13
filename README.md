@@ -25,7 +25,7 @@ Take a look at the makefile for comments on other targets (remake, release).
 `./aesf <enc | dec> <input_file> <output_file> <options>`\
 will use default settings (see options) and prompt for an AES key in hex format, ex. `00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F`
 
-Here is a basic example of the program in use (AES 128, EBC):
+Here is a basic example of the program in use (AES-128, ECB):
 ```
 markus@rz-pc:~/Desktop/example$ echo "very secret message" > secret.txt
 markus@rz-pc:~/Desktop/example$ cat secret.txt
@@ -70,7 +70,7 @@ This is not meant to be a comprehensive description of every process involved bu
 
 1. The program begins in AESFileUtility.cpp, where the main method handles command-line arguments and prepares the information necessary for encryption/decryption (keys, files, etc). Since keys and initialization vectors are provided through ASCII text representing hexadecimal values, an instance of the HexInput class is used to extract their true values into byte arrays. The HexInput class is also capable of prompting a user for the ASCII input if it was not provided as a command-line argument.
 2. An instance of the AES class is created given a key and key size; round keys are immediately generated so the class is ready to encrypt/decrypt individual blocks of data.
-3. An instance of an operation mode (EBC/CBC) is created given the instance of AES. The operation mode takes an input stream (from the input file), reads the contents into individual blocks that can be processed by the AES algorithm, and writes the output into the given output stream (to the output file).
+3. An instance of an operation mode (ECB/CBC) is created given the instance of AES. The operation mode takes an input stream (from the input file), reads the contents into individual blocks that can be processed by the AES algorithm, and writes the output into the given output stream (to the output file).
 
 AES Implementation Notes:
 * Constants such as the sbox values and round constants (used for AES "g" function) are located in AESConstants.h.
