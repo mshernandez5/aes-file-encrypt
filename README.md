@@ -8,8 +8,6 @@ Whenever there are significant changes to the program, I will create a tag and u
 
 Currently, I only compile binaries for Windows and Linux on x86-64.
 
-[Releases](/releases/)
-
 # Compiling Your Own Binaries
 
 Compiling requires g++ and GNU Make\
