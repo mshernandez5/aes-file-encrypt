@@ -51,7 +51,6 @@ void CBCMode::decrypt(std::istream & inStream, std::ostream & outStream)
 {
     const int & blockSize = algorithm.getBlockSize();
     bool lastBlock = false;
-    uint8_t * fileBuffer = new uint8_t[blockSize];
     uint8_t * lastCipherBlock = new uint8_t[blockSize];
     uint8_t * currentCipherBlock = new uint8_t[blockSize];;
     for (int byte = 0; byte < blockSize; ++byte)
@@ -60,7 +59,7 @@ void CBCMode::decrypt(std::istream & inStream, std::ostream & outStream)
     }
     do
     {
-        fileBuffer = new uint8_t[blockSize];
+        uint8_t * fileBuffer = new uint8_t[blockSize];
         inStream.read((char *) fileBuffer, blockSize);
         for (int byte = 0; byte < blockSize; ++byte)
         {
@@ -81,10 +80,10 @@ void CBCMode::decrypt(std::istream & inStream, std::ostream & outStream)
         {
             lastCipherBlock[byte] = currentCipherBlock[byte];
         }
+        delete[] fileBuffer;
     } while (!lastBlock);
     delete[] currentCipherBlock;
     delete[] lastCipherBlock;
-    delete[] fileBuffer;
 }
 
 void CBCMode::addBlock(uint8_t * a, uint8_t * b, const int & blockSize)
