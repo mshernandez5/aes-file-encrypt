@@ -1,6 +1,11 @@
 #ifndef HEX_INPUT_H
 #define HEX_INPUT_H
 
+/**
+ * The HexInput class takes ASCII strings representing hexadecimal
+ * values (ex. "0A") and creates an array of bytes holding the
+ * interpreted values (owned by the class).
+ */
 class HexInput
 {
     private:

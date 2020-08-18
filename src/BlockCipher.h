@@ -1,6 +1,10 @@
 #ifndef BLOCK_CIPHER_H
 #define BLOCK_CIPHER_H
 
+/**
+ * BlockCipher is an abstract class for algorithms that
+ * encrypt or decrypt a fixed amount of data (a block).
+ */
 class BlockCipher
 {
     public:

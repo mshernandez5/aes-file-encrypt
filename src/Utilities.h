@@ -3,25 +3,11 @@
 
 #include <string>
 
-bool equalsIgnoreCase(const char & a, const char & b)
+namespace Utilities
 {
-    return tolower(a) == tolower(b);
-}
-
-bool equalsIgnoreCase(const std::string & a, const std::string & b)
-{
-    if (a.size() != b.size())
-    {
-        return false;
-    }
-    for (std::string::size_type i = 0; i < a.size(); ++i)
-    { 
-        if (!equalsIgnoreCase(a[i], b[i]))
-        {
-            return false;
-        }
-    }
-    return true;
+    // String Utilities
+    bool equalsIgnoreCase(const char & a, const char & b);
+    bool equalsIgnoreCase(const std::string & a, const std::string & b);
 }
 
 #endif // UTILITIES_H

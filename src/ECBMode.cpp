@@ -26,14 +26,18 @@ void ECBMode::encrypt(std::istream & inStream, std::ostream & outStream)
 void ECBMode::decrypt(std::istream & inStream, std::ostream & outStream)
 {
     const int & blockSize = algorithm.getBlockSize();
-    bool lastBlock = false;
+    bool moreBlocksAvailable = false;
     uint8_t * fileBuffer = new uint8_t[blockSize];
     do
     {
         inStream.read((char *) fileBuffer, blockSize);
         algorithm.decrypt(fileBuffer);
-        lastBlock = inStream.peek() == EOF;
-        if (lastBlock)
+        moreBlocksAvailable = inStream.peek() != EOF;
+        // If this is the last block, then following the PKCS7 padding
+        // standard the last byte of this block will indicate how many
+        // bytes were used to pad the block; we will discard these bytes
+        // as they are not part of the original data.
+        if (!moreBlocksAvailable)
         {
             outStream.write((char *) fileBuffer, blockSize - fileBuffer[blockSize - 1]);
         }
@@ -41,6 +45,6 @@ void ECBMode::decrypt(std::istream & inStream, std::ostream & outStream)
         {
             outStream.write((char *) fileBuffer, blockSize);
         }
-    } while (!lastBlock);
+    } while (moreBlocksAvailable);
     delete[] fileBuffer;
 }

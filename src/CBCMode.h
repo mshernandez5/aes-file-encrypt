@@ -3,6 +3,13 @@
 
 #include "OperationMode.h"
 
+/**
+ * CBC (cipher block chaining) is a mode of operation that
+ * "adds" (XOR) the previous cipher block (already encrypted)
+ * to the current block of data before encrypting. For the
+ * first block, an initialization vector is used in place of
+ * a previous cipher block (which does not exist).
+ */
 class CBCMode : public OperationMode
 {
     private:

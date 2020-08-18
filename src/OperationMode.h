@@ -5,6 +5,13 @@
 
 #include "BlockCipher.h"
 
+/**
+ * OperationMode is an abstract class for modes of operation,
+ * which are standard ways data can be encrypted or decrypted
+ * using a block cipher. This is required since data comes in
+ * varying lengths while these ciphers only accept a fixed
+ * number of bytes as input.
+ */
 class OperationMode
 {
     public:
