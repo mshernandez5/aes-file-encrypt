@@ -50,16 +50,16 @@ void CBCMode::encrypt(std::istream & inStream, std::ostream & outStream)
 void CBCMode::decrypt(std::istream & inStream, std::ostream & outStream)
 {
     const int & blockSize = algorithm.getBlockSize();
-    bool lastBlock = false;
+    bool moreBlocksAvailable = false;
     uint8_t * lastCipherBlock = new uint8_t[blockSize];
-    uint8_t * currentCipherBlock = new uint8_t[blockSize];;
+    uint8_t * currentCipherBlock = new uint8_t[blockSize];
+    uint8_t * fileBuffer = new uint8_t[blockSize];
     for (int byte = 0; byte < blockSize; ++byte)
     {
         lastCipherBlock[byte] = initializationVector[byte];
     }
     do
     {
-        uint8_t * fileBuffer = new uint8_t[blockSize];
         inStream.read((char *) fileBuffer, blockSize);
         for (int byte = 0; byte < blockSize; ++byte)
         {
@@ -67,8 +67,12 @@ void CBCMode::decrypt(std::istream & inStream, std::ostream & outStream)
         }
         algorithm.decrypt(fileBuffer);
         addBlock(fileBuffer, lastCipherBlock, blockSize);
-        lastBlock = inStream.peek() == EOF;
-        if (lastBlock)
+        moreBlocksAvailable = inStream.peek() != EOF;
+        // If this is the last block, then following the PKCS7 padding
+        // standard the last byte of this block will indicate how many
+        // bytes were used to pad the block; we will discard these bytes
+        // as they are not part of the original data.
+        if (!moreBlocksAvailable)
         {
             outStream.write((char *) fileBuffer, blockSize - fileBuffer[blockSize - 1]);
         }
@@ -80,10 +84,10 @@ void CBCMode::decrypt(std::istream & inStream, std::ostream & outStream)
         {
             lastCipherBlock[byte] = currentCipherBlock[byte];
         }
-        delete[] fileBuffer;
-    } while (!lastBlock);
+    } while (moreBlocksAvailable);
     delete[] currentCipherBlock;
     delete[] lastCipherBlock;
+    delete[] fileBuffer;
 }
 
 void CBCMode::addBlock(uint8_t * a, uint8_t * b, const int & blockSize)
