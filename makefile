@@ -18,8 +18,12 @@ $(TARGET): $(OBJECTS)
 	$(CXX) $(CXXFLAGS) -o $@ $^
 
 # Compile Dependencies (Individual Source Files)
-$(OBJECT_DIR)/%.o : $(SOURCE_DIR)/%.cpp
+$(OBJECT_DIR)/%.o : $(SOURCE_DIR)/%.cpp | $(OBJECT_DIR)
 	$(CXX) $(CXXFLAGS) -c -o $@ $^
+
+# Create Object Directory If It Doesn't Exist
+$(OBJECT_DIR):
+	mkdir $(OBJECT_DIR)
 
 # Fake Targets, Point To Other Targets/Actions
 # Rather Than Actual File Targets:
