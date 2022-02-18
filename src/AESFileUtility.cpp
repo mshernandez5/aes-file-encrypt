@@ -7,7 +7,7 @@
 #include "AES.h"
 #include "ECBMode.h"
 #include "CBCMode.h"
-#include "Utilities.h"
+#include "StringUtilities.h"
 #include "BlockCipher.h"
 #include "OperationMode.h"
 #include "InvalidArgumentException.h"
@@ -36,11 +36,11 @@ int main(int argc, char * argv[])
             // Encrypt/Decrypt
             if (i == 1)
             {
-                if (Utilities::equalsIgnoreCase(option.substr(0, 3), "enc"))
+                if (StringUtilities::equalsIgnoreCase(option.substr(0, 3), "enc"))
                 {
                     encryptMode = true;
                 }
-                else if (Utilities::equalsIgnoreCase(option.substr(0, 3), "dec"))
+                else if (StringUtilities::equalsIgnoreCase(option.substr(0, 3), "dec"))
                 {
                     encryptMode = false;
                 }
@@ -50,7 +50,7 @@ int main(int argc, char * argv[])
                 }
             }
             // ASCII Hex Key
-            else if (Utilities::equalsIgnoreCase(option, "-k"))
+            else if (StringUtilities::equalsIgnoreCase(option, "-k"))
             {
                 if (i + 1 >= arguments.size())
                 {
@@ -59,21 +59,21 @@ int main(int argc, char * argv[])
                 textKey = arguments[++i];
             }
             // Mode Of Operation (ECB, CBC)
-            else if (Utilities::equalsIgnoreCase(option, "-m"))
+            else if (StringUtilities::equalsIgnoreCase(option, "-m"))
             {
                 if (i + 1 >= arguments.size())
                 {
                     throw InvalidArgumentException(option);
                 }
                 modeOfOperation = arguments[++i];
-                if (!Utilities::equalsIgnoreCase(modeOfOperation, "ecb")
-                    && !Utilities::equalsIgnoreCase(modeOfOperation, "cbc"))
+                if (!StringUtilities::equalsIgnoreCase(modeOfOperation, "ecb")
+                    && !StringUtilities::equalsIgnoreCase(modeOfOperation, "cbc"))
                 {
                     throw InvalidArgumentException(arguments[i]);
                 }
             }
             // ASCII Initialization Vector (CBC)
-            else if (Utilities::equalsIgnoreCase(option, "-iv"))
+            else if (StringUtilities::equalsIgnoreCase(option, "-iv"))
             {
                 if (i + 1 >= arguments.size())
                 {
@@ -82,7 +82,7 @@ int main(int argc, char * argv[])
                 textInitializationVector = arguments[++i];
             }
             // Key Size
-            else if (Utilities::equalsIgnoreCase(option, "-s"))
+            else if (StringUtilities::equalsIgnoreCase(option, "-s"))
             {
                 if (i + 1 >= arguments.size())
                 {
@@ -154,7 +154,7 @@ int main(int argc, char * argv[])
     // Initialization Vector Required For Non-ECB Modes
     uint8_t * initializationVector;
     HexInput ivInput(algorithm->getBlockSize(), "Initialization Vector: ");
-    if (!Utilities::equalsIgnoreCase(modeOfOperation, "ecb"))
+    if (!StringUtilities::equalsIgnoreCase(modeOfOperation, "ecb"))
     {
         try
         {
@@ -176,7 +176,7 @@ int main(int argc, char * argv[])
 
     // Set Mode
     OperationMode * mode;
-    if (Utilities::equalsIgnoreCase(modeOfOperation, "ecb"))
+    if (StringUtilities::equalsIgnoreCase(modeOfOperation, "ecb"))
     {
         mode = new ECBMode(*algorithm);
     }
