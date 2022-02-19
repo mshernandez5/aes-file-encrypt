@@ -2,9 +2,10 @@
 #define HEX_INPUT_H
 
 /**
- * The HexInput class takes ASCII strings representing hexadecimal
- * values (ex. "0A") and creates an array of bytes holding the
- * interpreted values (owned by the class).
+ * @brief Interprets hex strings into byte arrays.
+ * 
+ * Takes ASCII strings representing hexadecimal values (ex. "0A")
+ * and stores an array of bytes holding the interpreted values.
  */
 class HexInput
 {
