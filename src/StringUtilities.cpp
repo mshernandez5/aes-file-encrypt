@@ -1,12 +1,12 @@
 #include <string>
 #include "StringUtilities.h"
 
-bool StringUtilities::equalsIgnoreCase(const char & a, const char & b)
+bool StringUtilities::equalsIgnoreCase(const char& a, const char& b)
 {
     return tolower(a) == tolower(b);
 }
 
-bool StringUtilities::equalsIgnoreCase(const std::string & a, const std::string & b)
+bool StringUtilities::equalsIgnoreCase(const std::string& a, const std::string& b)
 {
     if (a.size() != b.size())
     {

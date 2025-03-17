@@ -3,13 +3,13 @@
 
 #include "InvalidKeyException.h"
 
-InvalidKeyException::InvalidKeyException(const int & bytesRead, const int & bytesExpected)
+InvalidKeyException::InvalidKeyException(const int& bytesRead, const int& bytesExpected)
             : std::runtime_error(getErrorMessage(bytesRead, bytesExpected)) {}
 
-InvalidKeyException::InvalidKeyException(const int & bytesExpected)
+InvalidKeyException::InvalidKeyException(const int& bytesExpected)
             : std::runtime_error(getErrorMessage(bytesExpected)) {}
 
-std::string InvalidKeyException::getErrorMessage(const int & bytesRead, const int & bytesExpected)
+std::string InvalidKeyException::getErrorMessage(const int& bytesRead, const int& bytesExpected)
 {
     std::ostringstream stringStream;
     stringStream << "Error, only " << bytesRead << "/"
@@ -17,7 +17,7 @@ std::string InvalidKeyException::getErrorMessage(const int & bytesRead, const in
     return stringStream.str();
 }
 
-std::string InvalidKeyException::getErrorMessage(const int & bytesExpected)
+std::string InvalidKeyException::getErrorMessage(const int& bytesExpected)
 {
     std::ostringstream stringStream;
     stringStream << "Error, over " << bytesExpected

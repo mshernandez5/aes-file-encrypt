@@ -13,7 +13,7 @@
 #include "InvalidArgumentException.h"
 #include "HexInput.h"
 
-int main(int argc, char * argv[])
+int main(int argc, char* argv[])
 {
     // Create std::string Objects For c_string Arguments
     std::vector<std::string> arguments(argv, argv + argc);
@@ -32,7 +32,7 @@ int main(int argc, char * argv[])
     {
         for (std::vector<std::string>::size_type i = 1; i < arguments.size(); ++i)
         {
-            std::string & option = arguments[i];
+            std::string& option = arguments[i];
             // Encrypt/Decrypt
             if (i == 1)
             {
@@ -122,14 +122,14 @@ int main(int argc, char * argv[])
             throw std::runtime_error("Output file not specified!");
         }
     }
-    catch (const std::exception & e)
+    catch (const std::exception& e)
     {
         std::cerr << e.what() << '\n';
         exit(1);
     }
     
     // Extract Key Bytes, Prompt For Key If Necessary
-    uint8_t * keyBytes;
+    uint8_t* keyBytes;
     HexInput keyInput(keyByteSize);
     try
     {
@@ -142,17 +142,17 @@ int main(int argc, char * argv[])
             keyBytes = keyInput.keyRead();
         }
     }
-    catch(const std::exception & e)
+    catch(const std::exception& e)
     {
         std::cerr << e.what() << '\n';
         exit(1);
     }
 
     // Select Algorithm
-    BlockCipher * algorithm = new AES(keyBytes, keyByteSize);
+    BlockCipher* algorithm = new AES(keyBytes, keyByteSize);
 
     // Initialization Vector Required For Non-ECB Modes
-    uint8_t * initializationVector;
+    uint8_t* initializationVector;
     HexInput ivInput(algorithm->getBlockSize(), "Initialization Vector: ");
     if (!StringUtilities::equalsIgnoreCase(modeOfOperation, "ecb"))
     {
@@ -167,7 +167,7 @@ int main(int argc, char * argv[])
                 initializationVector = ivInput.keyRead();
             }
         }
-        catch(const std::exception & e)
+        catch(const std::exception& e)
         {
             std::cerr << e.what() << '\n';
             exit(1);
@@ -175,7 +175,7 @@ int main(int argc, char * argv[])
     }
 
     // Set Mode
-    OperationMode * mode;
+    OperationMode* mode;
     if (StringUtilities::equalsIgnoreCase(modeOfOperation, "ecb"))
     {
         mode = new ECBMode(*algorithm);

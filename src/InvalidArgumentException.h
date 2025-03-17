@@ -6,10 +6,10 @@
 class InvalidArgumentException : public std::runtime_error
 {
     private:
-        std::string getErrorMessage(const std::string & details);
+        std::string getErrorMessage(const std::string& details);
 
     public:
-        InvalidArgumentException(const std::string & details);
+        InvalidArgumentException(const std::string& details);
 };
 
 #endif // INVALID_ARGUMENT_EXCEPTION_H

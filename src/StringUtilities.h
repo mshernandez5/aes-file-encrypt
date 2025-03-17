@@ -13,7 +13,7 @@ namespace StringUtilities
      * @return true If the characters are equal when ignoring case.
      * @return false If the characters are not equal.
      */
-    bool equalsIgnoreCase(const char & a, const char & b);
+    bool equalsIgnoreCase(const char& a, const char& b);
 
     /**
      * @brief Checks whether two strings are equal, ignoring character case.
@@ -26,7 +26,7 @@ namespace StringUtilities
      * @return true If the strings are equal when ignoring case.
      * @return false If the strings are not equal.
      */
-    bool equalsIgnoreCase(const std::string & a, const std::string & b);
+    bool equalsIgnoreCase(const std::string& a, const std::string& b);
 }
 
 #endif // STRING_UTILITIES_H

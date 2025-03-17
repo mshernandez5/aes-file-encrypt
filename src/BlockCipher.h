@@ -10,10 +10,10 @@
 class BlockCipher
 {
     public:
-        virtual void encrypt(uint8_t * bytes) = 0;
-        virtual void decrypt(uint8_t * bytes) = 0;
+        virtual void encrypt(uint8_t* bytes) = 0;
+        virtual void decrypt(uint8_t* bytes) = 0;
         int getBlockSize() { return blockByteSize; };
-        BlockCipher(const int & blockSize) { blockByteSize = blockSize; };
+        BlockCipher(const int& blockSize) { blockByteSize = blockSize; };
 
     private:
         int blockByteSize;

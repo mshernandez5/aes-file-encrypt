@@ -1,13 +1,13 @@
 #include "ECBMode.h"
 
-ECBMode::ECBMode(BlockCipher & algorithm) : algorithm(algorithm) {}
+ECBMode::ECBMode(BlockCipher& algorithm) : algorithm(algorithm) {}
 
-void ECBMode::encrypt(std::istream & inStream, std::ostream & outStream)
+void ECBMode::encrypt(std::istream& inStream, std::ostream& outStream)
 {
-    const int & blockSize = algorithm.getBlockSize();
+    const int& blockSize = algorithm.getBlockSize();
     bool addedPadding = false;
     int bytesRead;
-    uint8_t * fileBuffer = new uint8_t[blockSize];
+    uint8_t* fileBuffer = new uint8_t[blockSize];
     do
     {
         inStream.read((char *) fileBuffer, blockSize);
@@ -23,11 +23,11 @@ void ECBMode::encrypt(std::istream & inStream, std::ostream & outStream)
     delete[] fileBuffer;
 }
 
-void ECBMode::decrypt(std::istream & inStream, std::ostream & outStream)
+void ECBMode::decrypt(std::istream& inStream, std::ostream& outStream)
 {
-    const int & blockSize = algorithm.getBlockSize();
+    const int& blockSize = algorithm.getBlockSize();
     bool moreBlocksAvailable = false;
-    uint8_t * fileBuffer = new uint8_t[blockSize];
+    uint8_t* fileBuffer = new uint8_t[blockSize];
     do
     {
         inStream.read((char *) fileBuffer, blockSize);

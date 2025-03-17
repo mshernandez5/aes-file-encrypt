@@ -1,8 +1,8 @@
 #include "CBCMode.h"
 
-CBCMode::CBCMode(BlockCipher & algorithm, uint8_t * initializationVector) : algorithm(algorithm)
+CBCMode::CBCMode(BlockCipher& algorithm, uint8_t* initializationVector) : algorithm(algorithm)
 {
-    const int & blockSize = algorithm.getBlockSize();
+    const int& blockSize = algorithm.getBlockSize();
     this->initializationVector = new uint8_t[blockSize];
     for (int byte = 0; byte < blockSize; ++byte)
     {
@@ -15,13 +15,13 @@ CBCMode::~CBCMode()
     delete[] initializationVector;
 }
 
-void CBCMode::encrypt(std::istream & inStream, std::ostream & outStream)
+void CBCMode::encrypt(std::istream& inStream, std::ostream& outStream)
 {
-    const int & blockSize = algorithm.getBlockSize();
+    const int& blockSize = algorithm.getBlockSize();
     bool addedPadding = false;
     int bytesRead;
-    uint8_t * fileBuffer = new uint8_t[blockSize];
-    uint8_t * lastCipherBlock = new uint8_t[blockSize];
+    uint8_t* fileBuffer = new uint8_t[blockSize];
+    uint8_t* lastCipherBlock = new uint8_t[blockSize];
     for (int byte = 0; byte < blockSize; ++byte)
     {
         lastCipherBlock[byte] = initializationVector[byte];
@@ -47,13 +47,13 @@ void CBCMode::encrypt(std::istream & inStream, std::ostream & outStream)
     delete[] fileBuffer;
 }
 
-void CBCMode::decrypt(std::istream & inStream, std::ostream & outStream)
+void CBCMode::decrypt(std::istream& inStream, std::ostream& outStream)
 {
-    const int & blockSize = algorithm.getBlockSize();
+    const int& blockSize = algorithm.getBlockSize();
     bool moreBlocksAvailable = false;
-    uint8_t * lastCipherBlock = new uint8_t[blockSize];
-    uint8_t * currentCipherBlock = new uint8_t[blockSize];
-    uint8_t * fileBuffer = new uint8_t[blockSize];
+    uint8_t* lastCipherBlock = new uint8_t[blockSize];
+    uint8_t* currentCipherBlock = new uint8_t[blockSize];
+    uint8_t* fileBuffer = new uint8_t[blockSize];
     for (int byte = 0; byte < blockSize; ++byte)
     {
         lastCipherBlock[byte] = initializationVector[byte];
@@ -90,7 +90,7 @@ void CBCMode::decrypt(std::istream & inStream, std::ostream & outStream)
     delete[] fileBuffer;
 }
 
-void CBCMode::addBlock(uint8_t * a, uint8_t * b, const int & blockSize)
+void CBCMode::addBlock(uint8_t* a, uint8_t* b, const int& blockSize)
 {
     for (int byte = 0; byte < blockSize; ++byte)
     {
