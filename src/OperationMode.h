@@ -1,9 +1,10 @@
 #ifndef ENCRYPTION_MODE_H
 #define ENCRYPTION_MODE_H
 
-#include <fstream>
-
 #include "BlockCipher.h"
+
+#include <cstdint>
+#include <fstream>
 
 /**
  * @brief An abstract representation for modes of encryption.

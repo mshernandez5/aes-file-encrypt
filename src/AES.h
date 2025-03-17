@@ -1,7 +1,7 @@
 #ifndef AES_H
 #define AES_H
 
-#include <stdint.h>
+#include <cstdint>
 
 #include "AESConstants.h"
 #include "BlockCipher.h"

@@ -3,6 +3,8 @@
 
 #include "OperationMode.h"
 
+#include <cstdint>
+
 /**
  * CBC (cipher block chaining) is a mode of operation that
  * "adds" (XOR) the previous cipher block (already encrypted)

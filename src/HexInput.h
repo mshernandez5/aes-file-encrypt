@@ -1,6 +1,8 @@
 #ifndef HEX_INPUT_H
 #define HEX_INPUT_H
 
+#include <cstdint>
+
 /**
  * @brief Interprets hex strings into byte arrays.
  * 

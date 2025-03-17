@@ -1,7 +1,7 @@
 #ifndef AES_CONSTANTS_H
 #define AES_CONSTANTS_H
 
-#include <stdint.h>
+#include <cstdint>
 
 // sbox Values
 // Index Corresponds To Input Byte
