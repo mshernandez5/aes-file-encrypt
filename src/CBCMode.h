@@ -3,6 +3,8 @@
 
 #include "OperationMode.h"
 
+#include <cstdint>
+
 /**
  * CBC (cipher block chaining) is a mode of operation that
  * "adds" (XOR) the previous cipher block (already encrypted)
@@ -13,17 +15,17 @@
 class CBCMode : public OperationMode
 {
     private:
-        BlockCipher & algorithm;
-        uint8_t * initializationVector;
+        BlockCipher& algorithm;
+        uint8_t* initializationVector;
 
     public:
-        CBCMode(BlockCipher & algorithm, uint8_t * initializationVector);
+        CBCMode(BlockCipher& algorithm, uint8_t* initializationVector);
         ~CBCMode();
 
-        void encrypt(std::istream & inStream, std::ostream & outStream);
-        void decrypt(std::istream & inStream, std::ostream & outStream);
+        void encrypt(std::istream& inStream, std::ostream& outStream);
+        void decrypt(std::istream& inStream, std::ostream& outStream);
 
-        void addBlock(uint8_t * a, uint8_t * b, const int & blockSize);
+        void addBlock(uint8_t* a, uint8_t* b, const int& blockSize);
 };
 
 #endif // CBC_MODE_H

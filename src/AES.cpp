@@ -1,6 +1,6 @@
 #include "AES.h"
 
-AES::AES(uint8_t * keyBytes, const int & numBytes) : BlockCipher(16)
+AES::AES(uint8_t* keyBytes, const int& numBytes) : BlockCipher(16)
 {
     keyByteSize = numBytes;
     switch (keyByteSize)
@@ -22,7 +22,7 @@ AES::~AES()
     delete[] keySchedule;
 }
 
-void AES::encrypt(uint8_t * bytes)
+void AES::encrypt(uint8_t* bytes)
 {
     // Key Whitening
     addKey(bytes, keySchedule);
@@ -42,7 +42,7 @@ void AES::encrypt(uint8_t * bytes)
     addKey(bytes, (keySchedule + 16 * numberRounds));
 }
 
-void AES::decrypt(uint8_t * bytes)
+void AES::decrypt(uint8_t* bytes)
 {
     // Last Round Inverse
     addKey(bytes, (keySchedule + 16 * numberRounds));
@@ -62,11 +62,11 @@ void AES::decrypt(uint8_t * bytes)
     addKey(bytes, keySchedule);
 }
 
-uint8_t * AES::generateKeySchedule(uint8_t * keyBytes)
+uint8_t* AES::generateKeySchedule(uint8_t* keyBytes)
 {
     int numberKeyRounds = (numberRounds * 16) / keyByteSize;
     int numberWordsPerKeyRound = keyByteSize / 4;
-    uint8_t * keyExpansion = new uint8_t[keyByteSize * (numberKeyRounds + 1)];
+    uint8_t* keyExpansion = new uint8_t[keyByteSize * (numberKeyRounds + 1)];
     // Copy Input Key to "Round 0" Initial Key
     for (int byte = 0; byte < keyByteSize; ++byte)
     {
@@ -75,23 +75,23 @@ uint8_t * AES::generateKeySchedule(uint8_t * keyBytes)
     // Rounds Of Key Expansion
     for (int round = 1; round <= numberKeyRounds; round++)
     {
-        uint8_t * roundKeyPtr = keyExpansion + round * keyByteSize;
+        uint8_t* roundKeyPtr = keyExpansion + round * keyByteSize;
         for (int byte = 0; byte < keyByteSize; ++byte)
         {
             roundKeyPtr[byte] = keyExpansion[keyByteSize * (round - 1) + byte];
         }
         for (int word = 0; word < numberWordsPerKeyRound; ++word)
         {
-            uint8_t * wordPtr = roundKeyPtr + word * 4;
+            uint8_t* wordPtr = roundKeyPtr + word * 4;
             if (word == 0)
             {
-                uint8_t * gResult = aesG((roundKeyPtr + (numberWordsPerKeyRound - 1) * 4), round);
+                uint8_t* gResult = aesG((roundKeyPtr + (numberWordsPerKeyRound - 1) * 4), round);
                 addWords(wordPtr, gResult);
                 delete gResult;
             }
             else if (keyByteSize == 32 && word == 4)
             {
-                uint8_t * hResult = aesH(wordPtr - 4);
+                uint8_t* hResult = aesH(wordPtr - 4);
                 addWords(wordPtr, hResult);
                 delete hResult;
             }
@@ -104,9 +104,9 @@ uint8_t * AES::generateKeySchedule(uint8_t * keyBytes)
     return keyExpansion;
 }
 
-uint8_t * AES::aesG(uint8_t * word, int round)
+uint8_t* AES::aesG(uint8_t* word, int round)
 {
-    uint8_t * bytes = new uint8_t[4];
+    uint8_t* bytes = new uint8_t[4];
     for (int byte = 0; byte < 4; ++byte)
     {
         bytes[byte] = word[byte];
@@ -120,9 +120,9 @@ uint8_t * AES::aesG(uint8_t * word, int round)
     return bytes;
 }
 
-uint8_t * AES::aesH(uint8_t * word)
+uint8_t* AES::aesH(uint8_t* word)
 {
-    uint8_t * bytes = new uint8_t[4];
+    uint8_t* bytes = new uint8_t[4];
     for (int byte = 0; byte < 4; ++byte)
     {
         bytes[byte] = word[byte];
@@ -134,7 +134,7 @@ uint8_t * AES::aesH(uint8_t * word)
     return bytes;
 }
 
-void AES::addWords(uint8_t * a, uint8_t * b)
+void AES::addWords(uint8_t* a, uint8_t* b)
 {
     for (int byte = 0; byte < 4; ++byte)
     {
@@ -142,7 +142,7 @@ void AES::addWords(uint8_t * a, uint8_t * b)
     }
 }
 
-void AES::addKey(uint8_t * bytes, uint8_t * key)
+void AES::addKey(uint8_t* bytes, uint8_t* key)
 {
     for (int byte = 0; byte < 16; ++byte)
     {
@@ -150,17 +150,18 @@ void AES::addKey(uint8_t * bytes, uint8_t * key)
     }
 }
 
-void AES::leftCyclicByteShiftWord(uint8_t * word)
+void AES::leftCyclicByteShiftWord(uint8_t* word)
 {
+    // XOR-Swap Pairs From LSB -> MSB
     for (int byte = 1; byte < 4; ++byte)
     {
-        word[byte] ^= word[byte - 1];
+        word[byte]     ^= word[byte - 1];
         word[byte - 1] ^= word[byte];
-        word[byte] ^= word[byte - 1];
+        word[byte]     ^= word[byte - 1];
     }
 }
 
-void AES::byteSubstitution(uint8_t * bytes)
+void AES::byteSubstitution(uint8_t* bytes)
 {
     for (int byte = 0; byte < 16; ++byte)
     {
@@ -168,7 +169,7 @@ void AES::byteSubstitution(uint8_t * bytes)
     }
 }
 
-void AES::inverseByteSubstitution(uint8_t * bytes)
+void AES::inverseByteSubstitution(uint8_t* bytes)
 {
     for (int byte = 0; byte < 16; ++byte)
     {
@@ -176,7 +177,7 @@ void AES::inverseByteSubstitution(uint8_t * bytes)
     }
 }
 
-void AES::shiftRows(uint8_t * bytes)
+void AES::shiftRows(uint8_t* bytes)
 {
     uint8_t mappedBytes[16];
     for (int row = 0; row < 4; ++row)
@@ -192,7 +193,7 @@ void AES::shiftRows(uint8_t * bytes)
     }
 }
 
-void AES::inverseShiftRows(uint8_t * bytes)
+void AES::inverseShiftRows(uint8_t* bytes)
 {
     uint8_t mappedBytes[16];
     for (int row = 0; row < 4; ++row)
@@ -208,7 +209,7 @@ void AES::inverseShiftRows(uint8_t * bytes)
     }
 }
 
-void AES::mixColumns(uint8_t * bytes)
+void AES::mixColumns(uint8_t* bytes)
 {
     uint8_t tmp[16];
     for (int i = 0; i <= 12; i += 4)
@@ -224,7 +225,7 @@ void AES::mixColumns(uint8_t * bytes)
     }
 }
 
-void AES::inverseMixColumns(uint8_t * bytes)
+void AES::inverseMixColumns(uint8_t* bytes)
 {
     uint8_t tmp[16];
     for (int i = 0; i <= 12; i += 4)

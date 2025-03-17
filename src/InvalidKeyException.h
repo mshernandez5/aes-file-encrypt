@@ -6,12 +6,12 @@
 class InvalidKeyException : public std::runtime_error
 {
     private:
-        std::string getErrorMessage(const int & bytesRead);
-        std::string getErrorMessage(const int & bytesRead, const int & bytesExpected);
+        std::string getErrorMessage(const int& bytesRead);
+        std::string getErrorMessage(const int& bytesRead, const int& bytesExpected);
 
     public:
-        InvalidKeyException(const int & bytesRead, const int & bytesExpected);
-        InvalidKeyException(const int & bytesExpected);
+        InvalidKeyException(const int& bytesRead, const int& bytesExpected);
+        InvalidKeyException(const int& bytesExpected);
 };
 
 #endif // INVALID_KEY_EXCEPTION_H

@@ -1,9 +1,10 @@
 #ifndef ENCRYPTION_MODE_H
 #define ENCRYPTION_MODE_H
 
-#include <fstream>
-
 #include "BlockCipher.h"
+
+#include <cstdint>
+#include <fstream>
 
 /**
  * @brief An abstract representation for modes of encryption.
@@ -23,7 +24,7 @@ class OperationMode
          * @param inStream A stream of data to encrypt.
          * @param outStream The stream to write encrypted results to.
          */
-        virtual void encrypt(std::istream & inStream, std::ostream & outStream) = 0;
+        virtual void encrypt(std::istream& inStream, std::ostream& outStream) = 0;
 
         /**
          * @brief Decrypt data from a stream, writing decrypted data to an output stream.
@@ -31,7 +32,7 @@ class OperationMode
          * @param inStream A stream of data to decrypt.
          * @param outStream The stream to write decrypted results to.
          */
-        virtual void decrypt(std::istream & inStream, std::ostream & outStream) = 0;
+        virtual void decrypt(std::istream& inStream, std::ostream& outStream) = 0;
 
         /**
          * @brief Pads a buffer to indicate unused space in the final block.
@@ -40,7 +41,7 @@ class OperationMode
          * @param bytesRead The last number of bytes read.
          * @param blockSize The cipher block size.
          */
-        void padBuffer(uint8_t * buffer, const int & bytesRead, const int & blockSize);
+        void padBuffer(uint8_t* buffer, const int& bytesRead, const int& blockSize);
 };
 
 #endif // ENCRYPTION_MODE_H
